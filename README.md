@@ -95,7 +95,7 @@ src/
 Ce projet a été réalisé par :
 
 - **KAMB02** - [GitHub](https://github.com/KAMB02)
-- **ELISA_734** - [GitHub](https://github.com/ELISA_734)
+- **ELISA_734** - [GitHub](https://github.com/Elisa734)
 
 ## Licence
 
