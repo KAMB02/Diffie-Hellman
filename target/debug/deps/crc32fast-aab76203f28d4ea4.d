@@ -1,0 +1,10 @@
+C:\Users\HP\Desktop\MASTER RIST\PROJET2025-2026\Diffiehellman\diffierust\target\debug\deps\crc32fast-aab76203f28d4ea4.d: C:\Users\HP\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.5.0\src\lib.rs C:\Users\HP\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.5.0\src\baseline.rs C:\Users\HP\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.5.0\src\combine.rs C:\Users\HP\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.5.0\src\specialized\mod.rs C:\Users\HP\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.5.0\src\table.rs C:\Users\HP\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.5.0\src\specialized\pclmulqdq.rs
+
+C:\Users\HP\Desktop\MASTER RIST\PROJET2025-2026\Diffiehellman\diffierust\target\debug\deps\libcrc32fast-aab76203f28d4ea4.rmeta: C:\Users\HP\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.5.0\src\lib.rs C:\Users\HP\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.5.0\src\baseline.rs C:\Users\HP\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.5.0\src\combine.rs C:\Users\HP\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.5.0\src\specialized\mod.rs C:\Users\HP\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.5.0\src\table.rs C:\Users\HP\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.5.0\src\specialized\pclmulqdq.rs
+
+C:\Users\HP\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.5.0\src\lib.rs:
+C:\Users\HP\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.5.0\src\baseline.rs:
+C:\Users\HP\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.5.0\src\combine.rs:
+C:\Users\HP\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.5.0\src\specialized\mod.rs:
+C:\Users\HP\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.5.0\src\table.rs:
+C:\Users\HP\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.5.0\src\specialized\pclmulqdq.rs:
