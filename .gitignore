@@ -16,3 +16,4 @@ Thumbs.db
 # Backup files
 *.bak
 *.backup
+Cargo.lock
