@@ -12,7 +12,7 @@ use rand::Rng;
 // Modules internes
 use crate::dh::{is_prime, compute_public_key, compute_shared_key};
 use crate::attack::{brute_force_attack, smart_attack, AttackResult};
-use crate::classify::{classify_prime_size, SecurityLevel, get_security_description, get_security_explanation};
+use crate::classifi::{classify_prime_size, SecurityLevel, get_security_description, get_security_explanation};
 
 // État de l'application
 #[derive(Debug, Default)]
@@ -329,7 +329,7 @@ impl eframe::App for DiffieHellmanApp {
             
             ui.separator();
             
-            // Section des paramètres avec style amélioré
+            // Section des paramètres avec style 
             egui::Frame::group(ui.style()).show(ui, |ui| {
                 ui.heading("📋 Paramètres du protocole");
                 
@@ -372,7 +372,7 @@ impl eframe::App for DiffieHellmanApp {
                 });
             });
             
-            // Messages avec style amélioré
+            // Messages avec style
             if let Some(ref error) = self.show_error {
                 egui::Frame::none()
                     .fill(egui::Color32::from_rgb(255, 240, 240))
@@ -450,7 +450,7 @@ impl eframe::App for DiffieHellmanApp {
                 ui.separator();
             }
             
-            // Section d'attaque avec design amélioré
+            // Section d'attaque avec design
             if self.A.is_some() && self.B.is_some() {
                 egui::Frame::group(ui.style()).show(ui, |ui| {
                     ui.heading("⚔️ Simulation d'attaque");
@@ -534,7 +534,7 @@ pub fn run_gui() -> Result<(), eframe::Error> {
         viewport: egui::ViewportBuilder::default()
             .with_inner_size([1000.0, 800.0])
             .with_min_inner_size([800.0, 600.0])
-            .with_title("🔐 Démonstration Diffie-Hellman - Interface Améliorée"),
+            .with_title("🔐 Diffie-hellman"),
         ..Default::default()
     };
     

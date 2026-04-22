@@ -4,7 +4,7 @@
 //! et explicatives pour les lycéens
 
 use num_bigint::BigUint;
-use crate::classify::{SecurityLevel, get_security_description, get_security_explanation, get_attack_time_estimate};
+use crate::classifi::{SecurityLevel, get_security_description, get_security_explanation, get_attack_time_estimate};
 
 // Affiche un titre stylisé
 pub fn display_title(title: &str) {

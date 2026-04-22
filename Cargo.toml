@@ -16,5 +16,5 @@ name = "console"
 path = "src/main.rs"
 
 [[bin]]
-name = "gui"
-path = "src/main_gui.rs"
+name = "interface"
+path = "src/main_int.rs"

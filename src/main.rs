@@ -13,13 +13,13 @@ use num_bigint::BigUint;
 // Modules internes
 mod dh;
 mod attack;
-mod classify;
-mod display;
+mod classifi;
+mod affichage;
 
 use dh::{is_prime, compute_public_key, compute_shared_key};
 use attack::{brute_force_attack, smart_attack, display_attack_result};
-use classify::{classify_prime_size, SecurityLevel};
-use display::{
+use classifi::{classify_prime_size, SecurityLevel};
+use affichage::{
     display_title, display_section, explain_parameters, display_classification,
     display_protocol_steps, display_attack_menu, display_brute_force_options,
     display_conclusion, display_error, display_success, display_info
