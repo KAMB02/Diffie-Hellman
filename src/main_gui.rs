@@ -4,14 +4,14 @@
 
 use std::error::Error;
 
-mod gui_egui;
+mod gui;
 mod dh;
 mod attack;
 mod classify;
 
 fn main() -> Result<(), Box<dyn Error>> {
     // Lancer l'interface graphique egui
-    gui_egui::run_gui()?;
+    gui::run_gui()?;
     
     Ok(())
 }
