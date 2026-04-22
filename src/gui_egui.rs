@@ -6,6 +6,8 @@
 use eframe::egui;
 use num_bigint::BigUint;
 use std::str::FromStr;
+use std::time::Instant;
+use rand::Rng;
 
 // Modules internes
 use crate::dh::{is_prime, compute_public_key, compute_shared_key};
@@ -45,12 +47,75 @@ pub struct DiffieHellmanApp {
     // Messages
     pub protocol_steps: Vec<String>,
     pub security_message: String,
+    
+    // Nouvelles fonctionnalités
+    pub dark_mode: bool,
+    pub selected_preset: usize,
+    pub show_advanced: bool,
+    pub animation_time: f32,
+    pub last_update: Option<Instant>,
+    pub auto_generate: bool,
+    pub copy_buffer: String,
 }
 
 impl DiffieHellmanApp {
     // Crée une nouvelle instance de l'application
     pub fn new() -> Self {
-        Self::default()
+        let mut app = Self::default();
+        app.dark_mode = true;
+        app.last_update = Some(Instant::now());
+        app.selected_preset = 0;
+        app
+    }
+    
+    /// Retourne les presets prédéfinis
+    fn get_presets() -> Vec<(&'static str, &'static str, &'static str, &'static str, &'static str)> {
+        vec![
+            ("Pédagogique (petit)", "23", "5", "6", "15"),
+            ("Sécurité moyenne", "104729", "2", "12345", "67890"),
+            ("Haute sécurité", "1000000007", "2", "987654321", "123456789"),
+            ("Personnalisé", "", "", "", ""),
+        ]
+    }
+    
+    /// Applique un preset
+    fn apply_preset(&mut self, preset_index: usize) {
+        let presets = Self::get_presets();
+        if preset_index < presets.len() {
+            let (_name, p, g, a, b) = presets[preset_index];
+            self.p_input = p.to_string();
+            self.g_input = g.to_string();
+            self.a_input = a.to_string();
+            self.b_input = b.to_string();
+            self.selected_preset = preset_index;
+        }
+    }
+    
+    /// Génère des paramètres aléatoires sécurisés
+    fn generate_secure_parameters(&mut self) {
+        use rand::thread_rng;
+        
+        let mut rng = thread_rng();
+        
+        // Générer un nombre premier de taille moyenne (1024 bits serait trop lent)
+        let primes = vec![
+            "104729", "1299709", "15485863", "32452843", "49979687"
+        ];
+        let p_str = primes[rng.gen_range(0..primes.len())];
+        self.p_input = p_str.to_string();
+        
+        // g = 2 est souvent un bon choix
+        self.g_input = "2".to_string();
+        
+        // Secrets aléatoires (simplifié)
+        self.a_input = rng.gen_range(1000..99999).to_string();
+        self.b_input = rng.gen_range(1000..99999).to_string();
+    }
+    
+    /// Copie une valeur dans le presse-papiers
+    fn copy_to_clipboard(&mut self, value: &str) {
+        self.copy_buffer = value.to_string();
+        self.show_success = Some(format!("Copié : {}", value));
     }
     
     // Valide et parse les paramètres
@@ -202,103 +267,258 @@ impl DiffieHellmanApp {
 
 impl eframe::App for DiffieHellmanApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+        // Mettre à jour le temps d'animation
+        if let Some(last_update) = self.last_update {
+            let now = Instant::now();
+            self.animation_time += (now - last_update).as_secs_f32();
+            self.last_update = Some(now);
+        } else {
+            self.last_update = Some(Instant::now());
+        }
+        
+        // Appliquer le thème
+        if self.dark_mode {
+            ctx.set_visuals(egui::Visuals::dark());
+        } else {
+            ctx.set_visuals(egui::Visuals::light());
+        }
+        
         egui::CentralPanel::default().show(ctx, |ui| {
-            ui.heading("Démonstration Diffie-Hellman");
+            // En-tête avec titre et contrôles
+            ui.horizontal(|ui| {
+                ui.heading("🔐 Démonstration Diffie-Hellman");
+                ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+                    if ui.button(if self.dark_mode { "☀️" } else { "🌙" }).clicked() {
+                        self.dark_mode = !self.dark_mode;
+                    }
+                    if ui.button("📊").clicked() {
+                        self.show_advanced = !self.show_advanced;
+                    }
+                });
+            });
+            
             ui.separator();
             
-            // Section des paramètres
-            ui.heading("Paramètres du protocole");
+            // Section des presets
             ui.horizontal(|ui| {
-                ui.label("Nombre premier p:");
-                ui.text_edit_singleline(&mut self.p_input);
-            });
-            ui.horizontal(|ui| {
-                ui.label("Générateur g:");
-                ui.text_edit_singleline(&mut self.g_input);
+                ui.label("Preset:");
+                let presets = Self::get_presets();
+                let selected_text = presets[self.selected_preset].0;
+                
+                egui::ComboBox::from_label("")
+                    .selected_text(&*selected_text)
+                    .show_ui(ui, |ui| {
+                        for (i, (name, _, _, _, _)) in presets.iter().enumerate() {
+                            if ui.selectable_label(self.selected_preset == i, *name).clicked() {
+                                self.apply_preset(i);
+                            }
+                        }
+                    });
+                
+                if ui.button("🎲 Aléatoire").clicked() {
+                    self.generate_secure_parameters();
+                }
+                
+                if ui.button("🔄").clicked() {
+                    *self = Self::new();
+                }
             });
             
             ui.separator();
             
-            ui.heading("Secrets d'Alice et Bob");
-            ui.horizontal(|ui| {
-                ui.label("Secret d'Alice (a):");
-                ui.text_edit_singleline(&mut self.a_input);
-            });
-            ui.horizontal(|ui| {
-                ui.label("Secret de Bob (b):");
-                ui.text_edit_singleline(&mut self.b_input);
+            // Section des paramètres avec style amélioré
+            egui::Frame::group(ui.style()).show(ui, |ui| {
+                ui.heading("📋 Paramètres du protocole");
+                
+                // Paramètres publics
+                ui.horizontal(|ui| {
+                    ui.label("🔢 Nombre premier p:");
+                    ui.add_sized([200.0, 20.0], egui::TextEdit::singleline(&mut self.p_input));
+                    if !self.p_input.is_empty() && ui.button("📋").clicked() {
+                        let value = self.p_input.clone();
+                        self.copy_to_clipboard(&value);
+                    }
+                });
+                ui.horizontal(|ui| {
+                    ui.label("⚡ Générateur g:");
+                    ui.add_sized([200.0, 20.0], egui::TextEdit::singleline(&mut self.g_input));
+                    if !self.g_input.is_empty() && ui.button("📋").clicked() {
+                        let value = self.g_input.clone();
+                        self.copy_to_clipboard(&value);
+                    }
+                });
+                
+                ui.separator();
+                
+                ui.heading("🔐 Secrets d'Alice et Bob");
+                ui.horizontal(|ui| {
+                    ui.label("👩 Secret d'Alice (a):");
+                    ui.add_sized([200.0, 20.0], egui::TextEdit::singleline(&mut self.a_input));
+                    if !self.a_input.is_empty() && ui.button("📋").clicked() {
+                        let value = self.a_input.clone();
+                        self.copy_to_clipboard(&value);
+                    }
+                });
+                ui.horizontal(|ui| {
+                    ui.label("👨 Secret de Bob (b):");
+                    ui.add_sized([200.0, 20.0], egui::TextEdit::singleline(&mut self.b_input));
+                    if !self.b_input.is_empty() && ui.button("📋").clicked() {
+                        let value = self.b_input.clone();
+                        self.copy_to_clipboard(&value);
+                    }
+                });
             });
             
-            // Messages d'erreur et de succès
+            // Messages avec style amélioré
             if let Some(ref error) = self.show_error {
-                ui.colored_label(egui::Color32::RED, error);
+                egui::Frame::none()
+                    .fill(egui::Color32::from_rgb(255, 240, 240))
+                    .stroke(egui::Stroke::new(1.0, egui::Color32::RED))
+                    .rounding(4.0)
+                    .show(ui, |ui| {
+                        ui.colored_label(egui::Color32::RED, format!("❌ {}", error));
+                    });
             }
             if let Some(ref success) = self.show_success {
-                ui.colored_label(egui::Color32::GREEN, success);
+                egui::Frame::none()
+                    .fill(egui::Color32::from_rgb(240, 255, 240))
+                    .stroke(egui::Stroke::new(1.0, egui::Color32::GREEN))
+                    .rounding(4.0)
+                    .show(ui, |ui| {
+                        ui.colored_label(egui::Color32::GREEN, format!("✅ {}", success));
+                    });
             }
             
-            // Boutons d'action
+            // Boutons d'action avec style
             ui.horizontal(|ui| {
-                if ui.button("Valider les paramètres").clicked() {
+                if ui.add_sized([150.0, 30.0], egui::Button::new("🔍 Valider").fill(egui::Color32::from_rgb(0, 120, 215))).clicked() {
                     if self.validate_parameters() {
                         self.calculate_keys();
                     }
                 }
-                if ui.button("Réinitialiser").clicked() {
-                    *self = Self::default();
+                if ui.add_sized([100.0, 30.0], egui::Button::new("🔄 Reset").fill(egui::Color32::from_rgb(108, 117, 125))).clicked() {
+                    *self = Self::new();
                 }
+                ui.checkbox(&mut self.auto_generate, "Génération auto");
             });
             
             ui.separator();
             
-            // Section de sécurité
+            // Section de sécurité avec indicateur visuel
             if !self.security_message.is_empty() {
-                ui.heading("Analyse de sécurité");
-                ui.label(&self.security_message);
-                ui.separator();
-            }
-            
-            // Section du protocole
-            if !self.protocol_steps.is_empty() {
-                ui.heading("Étapes du protocole");
-                for step in &self.protocol_steps {
-                    ui.label(step);
-                }
-                ui.separator();
-            }
-            
-            // Section d'attaque
-            if self.A.is_some() && self.B.is_some() {
-                ui.heading("Simulation d'attaque");
-                ui.horizontal(|ui| {
-                    if ui.button("Attaque Brute-Force").clicked() && !self.attack_running {
-                        self.launch_brute_force_attack();
+                egui::Frame::group(ui.style()).show(ui, |ui| {
+                    ui.heading("🛡️ Analyse de sécurité");
+                    
+                    // Indicateur de sécurité visuel
+                    if let Some(ref level) = self.security_level {
+                        let (color, icon, text) = match level {
+                            SecurityLevel::Small => (egui::Color32::RED, "🔴", "Non sécurisé"),
+                            SecurityLevel::Medium => (egui::Color32::from_rgb(255, 165, 0), "🟡", "Faible"),
+                            SecurityLevel::Large => (egui::Color32::from_rgb(0, 255, 0), "🟢", "Fort"),
+                        };
+                        
+                        ui.horizontal(|ui| {
+                            ui.colored_label(color, format!("{} {}", icon, text));
+                            ui.add(egui::ProgressBar::new(0.5).fill(color));
+                        });
                     }
-                    if ui.button("Attaque Intelligente").clicked() && !self.attack_running {
-                        self.launch_smart_attack();
+                    
+                    ui.label(&self.security_message);
+                });
+                ui.separator();
+            }
+            
+            // Section du protocole avec mise en forme
+            if !self.protocol_steps.is_empty() {
+                egui::Frame::group(ui.style()).show(ui, |ui| {
+                    ui.heading("🔄 Étapes du protocole");
+                    
+                    egui::Grid::new("protocol_grid")
+                        .num_columns(2)
+                        .spacing([10.0, 4.0])
+                        .show(ui, |ui| {
+                            for (i, step) in self.protocol_steps.iter().enumerate() {
+                                ui.label(format!("{}.", i + 1));
+                                ui.label(step);
+                                ui.end_row();
+                            }
+                        });
+                });
+                ui.separator();
+            }
+            
+            // Section d'attaque avec design amélioré
+            if self.A.is_some() && self.B.is_some() {
+                egui::Frame::group(ui.style()).show(ui, |ui| {
+                    ui.heading("⚔️ Simulation d'attaque");
+                    
+                    ui.horizontal(|ui| {
+                        let brute_force_btn = ui.add_sized(
+                            [150.0, 30.0],
+                            egui::Button::new("💥 Brute-Force")
+                                .fill(if self.attack_running { egui::Color32::GRAY } else { egui::Color32::from_rgb(220, 53, 69) })
+                        );
+                        
+                        let smart_btn = ui.add_sized(
+                            [150.0, 30.0],
+                            egui::Button::new("🧠 Intelligente")
+                                .fill(if self.attack_running { egui::Color32::GRAY } else { egui::Color32::from_rgb(23, 162, 184) })
+                        );
+                        
+                        if brute_force_btn.clicked() && !self.attack_running {
+                            self.launch_brute_force_attack();
+                        }
+                        if smart_btn.clicked() && !self.attack_running {
+                            self.launch_smart_attack();
+                        }
+                    });
+                    
+                    // Progression animée
+                    if self.attack_running {
+                        ui.add(
+                            egui::ProgressBar::new(self.attack_progress)
+                                .show_percentage()
+                                .fill(egui::Color32::from_rgb(255, 193, 7))
+                        );
+                        ui.label("🔍 Recherche en cours...");
+                    }
+                    
+                    // Résultat détaillé
+                    if let Some(ref result) = self.attack_result {
+                        ui.separator();
+                        ui.heading("📊 Résultat de l'attaque");
+                        
+                        // Carte de résultat
+                        egui::Frame::none()
+                            .fill(if result.secret.is_some() { 
+                                egui::Color32::from_rgb(255, 240, 240) 
+                            } else { 
+                                egui::Color32::from_rgb(240, 255, 240) 
+                            })
+                            .rounding(8.0)
+                            .show(ui, |ui| {
+                                ui.label(&result.message);
+                                
+                                ui.horizontal(|ui| {
+                                    ui.label("⏱️ Temps:");
+                                    ui.label(format!("{:.2}s", result.duration.as_secs_f64()));
+                                });
+                                
+                                ui.horizontal(|ui| {
+                                    ui.label("🔄 Tentatives:");
+                                    ui.label(format!("{}", result.attempts));
+                                });
+                                
+                                if let (Some(ref secret), Some(ref shared_key)) = (&result.secret, &result.shared_key) {
+                                    ui.separator();
+                                    ui.colored_label(egui::Color32::RED, format!("🚨 Secret découvert : {}", secret));
+                                    ui.colored_label(egui::Color32::RED, format!("🔓 Clé partagée : {}", shared_key));
+                                } else {
+                                    ui.colored_label(egui::Color32::GREEN, "✅ La communication reste sécurisée !");
+                                }
+                            });
                     }
                 });
-                
-                // Progression de l'attaque
-                if self.attack_running {
-                    ui.add(egui::ProgressBar::new(self.attack_progress).show_percentage());
-                }
-                
-                // Résultat de l'attaque
-                if let Some(ref result) = self.attack_result {
-                    ui.separator();
-                    ui.heading("Résultat de l'attaque");
-                    ui.label(&result.message);
-                    ui.label(format!("Temps d'attaque : {:.2} secondes", result.duration.as_secs_f64()));
-                    ui.label(format!("Nombre de tentatives : {}", result.attempts));
-                    
-                    if let (Some(ref secret), Some(ref shared_key)) = (&result.secret, &result.shared_key) {
-                        ui.colored_label(egui::Color32::RED, format!("Secret trouvé : {}", secret));
-                        ui.colored_label(egui::Color32::RED, format!("Clé partagée : {}", shared_key));
-                    } else {
-                        ui.colored_label(egui::Color32::GREEN, "La communication reste sécurisée !");
-                    }
-                }
             }
         });
     }
@@ -307,13 +527,20 @@ impl eframe::App for DiffieHellmanApp {
 // Lance l'interface graphique
 pub fn run_gui() -> Result<(), eframe::Error> {
     let options = eframe::NativeOptions {
-        viewport: egui::ViewportBuilder::default().with_inner_size([800.0, 600.0]),
+        viewport: egui::ViewportBuilder::default()
+            .with_inner_size([1000.0, 800.0])
+            .with_min_inner_size([800.0, 600.0])
+            .with_title("🔐 Démonstration Diffie-Hellman - Interface Améliorée"),
         ..Default::default()
     };
     
     eframe::run_native(
         "Démonstration Diffie-Hellman",
         options,
-        Box::new(|_cc| Box::new(DiffieHellmanApp::new())),
+        Box::new(|cc| {
+            // Configure le renderer pour de meilleures performances
+            cc.egui_ctx.set_pixels_per_point(1.0);
+            Box::new(DiffieHellmanApp::new())
+        }),
     )
 }

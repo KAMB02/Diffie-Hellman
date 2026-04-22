@@ -10,7 +10,7 @@ colored = "2.1"
 eframe = "0.27.2"
 egui = "0.27.2"
 tokio = { version = "1.0", features = ["full"] }
-
+rand = "0.8"
 [[bin]]
 name = "console"
 path = "src/main.rs"
