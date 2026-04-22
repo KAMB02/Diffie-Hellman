@@ -32,7 +32,7 @@ pub fn mod_exp(base: &BigUint, exposant: &BigUint, modulus: &BigUint) -> BigUint
     let mut exposant = exposant.clone();
     
     while exposant > BigUint::zero() {
-        if &exposant % &BigUint::one() * 2u32 != BigUint::zero() {
+        if &exposant % 2u32 == BigUint::one() {
             result = (result * &base) % modulus;
         }
         exposant >>= 1;

@@ -1,4 +1,4 @@
-# Diffie-Hellman Cryptographic Protocol Demonstration a
+# Diffie-Hellman Cryptographic Protocol Demonstration
 
 ## Description
 
