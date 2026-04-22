@@ -12,7 +12,7 @@ use crate::dh::{is_prime, compute_public_key, compute_shared_key};
 use crate::attack::{brute_force_attack, smart_attack, AttackResult};
 use crate::classify::{classify_prime_size, SecurityLevel, get_security_description, get_security_explanation};
 
-/// État de l'application
+// État de l'application
 #[derive(Debug, Default)]
 pub struct DiffieHellmanApp {
     // Paramètres
@@ -48,12 +48,12 @@ pub struct DiffieHellmanApp {
 }
 
 impl DiffieHellmanApp {
-    /// Crée une nouvelle instance de l'application
+    // Crée une nouvelle instance de l'application
     pub fn new() -> Self {
         Self::default()
     }
     
-    /// Valide et parse les paramètres
+    // Valide et parse les paramètres
     fn validate_parameters(&mut self) -> bool {
         // Parse p
         match BigUint::from_str(&self.p_input) {
@@ -113,7 +113,7 @@ impl DiffieHellmanApp {
         true
     }
     
-    /// Calcule les clés publiques et partagées
+    // Calcule les clés publiques et partagées
     fn calculate_keys(&mut self) {
         if let (Some(ref p), Some(ref g), Some(ref a), Some(ref b)) = (&self.p, &self.g, &self.a, &self.b) {
             // Calculer les clés publiques
@@ -140,7 +140,7 @@ impl DiffieHellmanApp {
         }
     }
     
-    /// Génère les étapes du protocole pour l'affichage
+    // Génère les étapes du protocole pour l'affichage
     fn generate_protocol_steps(&mut self) {
         self.protocol_steps.clear();
         
@@ -157,7 +157,7 @@ impl DiffieHellmanApp {
         }
     }
     
-    /// Génère le message de sécurité
+    // Génère le message de sécurité
     fn generate_security_message(&mut self) {
         if let Some(ref level) = self.security_level {
             self.security_message = format!(
@@ -168,7 +168,7 @@ impl DiffieHellmanApp {
         }
     }
     
-    /// Lance une attaque brute-force
+    // Lance une attaque brute-force
     fn launch_brute_force_attack(&mut self) {
         if let (Some(ref p), Some(ref g), Some(ref A), Some(ref B)) = (&self.p, &self.g, &self.A, &self.B) {
             self.attack_running = true;
@@ -185,7 +185,7 @@ impl DiffieHellmanApp {
         }
     }
     
-    /// Lance une attaque intelligente
+    // Lance une attaque intelligente
     fn launch_smart_attack(&mut self) {
         if let (Some(ref p), Some(ref g), Some(ref A), Some(ref B)) = (&self.p, &self.g, &self.A, &self.B) {
             self.attack_running = true;
@@ -304,7 +304,7 @@ impl eframe::App for DiffieHellmanApp {
     }
 }
 
-/// Lance l'interface graphique
+// Lance l'interface graphique
 pub fn run_gui() -> Result<(), eframe::Error> {
     let options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default().with_inner_size([800.0, 600.0]),

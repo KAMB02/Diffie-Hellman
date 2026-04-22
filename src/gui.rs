@@ -15,7 +15,7 @@ use dh::{is_prime, compute_public_key, compute_shared_key};
 use attack::{brute_force_attack, smart_attack, AttackResult};
 use classify::{classify_prime_size, SecurityLevel, get_security_description, get_security_explanation};
 
-/// État de l'application partagé entre les callbacks
+// État de l'application partagé entre les callbacks
 #[derive(Debug, Clone)]
 pub struct AppState {
     pub p: Option<BigUint>,
@@ -45,7 +45,7 @@ impl Default for AppState {
     }
 }
 
-/// Crée l'interface graphique principale
+// Crée l'interface graphique principale
 pub async fn create_gui_app() -> Result<Page, Box<dyn std::error::Error>> {
     let state = Arc::new(RwLock::new(AppState::default()));
     
@@ -89,7 +89,7 @@ pub async fn create_gui_app() -> Result<Page, Box<dyn std::error::Error>> {
     Ok(page)
 }
 
-/// Crée l'en-tête de l'application
+// Crée l'en-tête de l'application
 fn create_header() -> Column {
     Column::new()
         .push(
@@ -136,7 +136,7 @@ fn create_header() -> Column {
         )
 }
 
-/// Crée la section des paramètres
+// Crée la section des paramètres
 async fn create_parameters_section(state: Arc<RwLock<AppState>>) -> Result<Column, Box<dyn std::error::Error>> {
     let section = Column::new()
         .push(
@@ -317,7 +317,7 @@ async fn create_parameters_section(state: Arc<RwLock<AppState>>) -> Result<Colum
     Ok(section)
 }
 
-/// Crée la section de sécurité
+// Crée la section de sécurité
 async fn create_security_section(state: Arc<RwLock<AppState>>) -> Result<Column, Box<dyn std::error::Error>> {
     let section = Column::new()
         .push(
@@ -367,7 +367,7 @@ async fn create_security_section(state: Arc<RwLock<AppState>>) -> Result<Column,
     Ok(section)
 }
 
-/// Crée la section du protocole
+// Crée la section du protocole
 async fn create_protocol_section(state: Arc<RwLock<AppState>>) -> Result<Column, Box<dyn std::error::Error>> {
     let section = Column::new()
         .push(
@@ -417,7 +417,7 @@ async fn create_protocol_section(state: Arc<RwLock<AppState>>) -> Result<Column,
     Ok(section)
 }
 
-/// Crée la section d'attaque
+// Crée la section d'attaque
 async fn create_attack_section(state: Arc<RwLock<AppState>>) -> Result<Column, Box<dyn std::error::Error>> {
     let section = Column::new()
         .push(
@@ -490,7 +490,7 @@ async fn create_attack_section(state: Arc<RwLock<AppState>>) -> Result<Column, B
     Ok(section)
 }
 
-/// Crée la section de conclusion
+// Crée la section de conclusion
 async fn create_conclusion_section(state: Arc<RwLock<AppState>>) -> Result<Column, Box<dyn std::error::Error>> {
     let section = Column::new()
         .push(

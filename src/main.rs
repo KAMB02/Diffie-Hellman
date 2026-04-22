@@ -25,7 +25,7 @@ use display::{
     display_conclusion, display_error, display_success, display_info
 };
 
-/// Point d'entrée du programme
+// Point d'entrée du programme
 fn main() {
     display_title("DÉMONSTRATION DU PROTOCOLE DIFFIE-HELLMAN");
     
@@ -51,14 +51,14 @@ fn main() {
     println!("N'oubliez pas : en sécurité, la taille des nombres compte ! 🔐");
 }
 
-/// Résultat du menu principal
+// Résultat du menu principal
 enum MenuResult {
     NewDemo,
     Continue,
     Quit,
 }
 
-/// Affiche le menu principal et gère le choix de l'utilisateur
+// Affiche le menu principal et gère le choix de l'utilisateur
 fn main_menu() -> MenuResult {
     println!("\n{}", "=".repeat(70));
     println!("📋 MENU PRINCIPAL");
@@ -88,7 +88,7 @@ fn main_menu() -> MenuResult {
     }
 }
 
-/// Fonction principale de la démonstration
+// Fonction principale de la démonstration
 fn run_demonstration() -> Result<(), Box<dyn std::error::Error>> {
     display_title("NOUVELLE DÉMONSTRATION DIFFIE-HELLMAN");
     
@@ -123,7 +123,7 @@ fn run_demonstration() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-/// Demande à l'utilisateur de saisir les paramètres publics p et g
+// Demande à l'utilisateur de saisir les paramètres publics p et g
 fn get_public_parameters() -> Result<(BigUint, BigUint), Box<dyn std::error::Error>> {
     display_section("Saisie des paramètres publics");
     
@@ -178,7 +178,7 @@ fn get_public_parameters() -> Result<(BigUint, BigUint), Box<dyn std::error::Err
     Ok((p, g))
 }
 
-/// Demande à l'utilisateur de saisir les secrets a et b
+// Demande à l'utilisateur de saisir les secrets a et b
 fn get_secret_parameters() -> Result<(BigUint, BigUint), Box<dyn std::error::Error>> {
     display_section("Saisie des secrets d'Alice et Bob");
     
@@ -235,7 +235,7 @@ fn get_secret_parameters() -> Result<(BigUint, BigUint), Box<dyn std::error::Err
     Ok((a, b))
 }
 
-/// Demande à l'utilisateur s'il veut lancer une attaque
+// Demande à l'utilisateur s'il veut lancer une attaque
 fn want_to_attack() -> Result<bool, Box<dyn std::error::Error>> {
     display_attack_menu();
     
@@ -260,7 +260,7 @@ fn want_to_attack() -> Result<bool, Box<dyn std::error::Error>> {
     }
 }
 
-/// Lance la simulation d'attaque
+// Lance la simulation d'attaque
 fn run_attack_simulation(
     p: &BigUint,
     g: &BigUint,
@@ -306,7 +306,7 @@ fn run_attack_simulation(
     }
 }
 
-/// Lance une attaque brute-force avec paramètres personnalisés
+// Lance une attaque brute-force avec paramètres personnalisés
 fn run_brute_force_attack(p: &BigUint, g: &BigUint, A: &BigUint, B: &BigUint) {
     display_brute_force_options();
     

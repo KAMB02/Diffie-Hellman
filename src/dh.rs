@@ -8,20 +8,8 @@
 use num_bigint::BigUint;
 use num_traits::{Zero, One};
 
-/// Calcule (base^exposant) % modulus de manière efficace
-/// 
-/// # Arguments
-/// * `base` - La base de l'exponentiation
-/// * `exposant` - L'exposant (le secret)
-/// * `modulus` - Le modulus (le nombre premier p)
-/// 
-/// # Returns
-/// Le résultat de (base^exposant) % modulus
-/// 
-/// # Exemple
-/// ```
-/// let result = mod_exp(2, 3, 5); // Calcule (2^3) % 5 = 8 % 5 = 3
-/// ```
+// let result = mod_exp(2, 3, 5); // Calcule (2^3) % 5 = 8 % 5 = 3
+// ```
 pub fn mod_exp(base: &BigUint, exposant: &BigUint, modulus: &BigUint) -> BigUint {
     if modulus.is_one() {
         return BigUint::zero();
@@ -42,47 +30,20 @@ pub fn mod_exp(base: &BigUint, exposant: &BigUint, modulus: &BigUint) -> BigUint
     result
 }
 
-/// Calcule la clé publique à partir du générateur g, du secret et du nombre premier p
-/// 
-/// Formule : clé_publique = g^secret mod p
-/// 
-/// # Arguments
-/// * `g` - Le générateur
-/// * `secret` - Le nombre secret (a pour Alice, b pour Bob)
-/// * `p` - Le nombre premier
-/// 
-/// # Returns
-/// La clé publique correspondante
+// Calcule la clé publique à partir du générateur g, du secret et du nombre premier p
+
+// Formule : clé_publique = g^secret mod p
+
+// La clé publique correspondante
 pub fn compute_public_key(g: &BigUint, secret: &BigUint, p: &BigUint) -> BigUint {
     mod_exp(g, secret, p)
 }
 
-/// Calcule la clé partagée à partir de la clé publique reçue et de son propre secret
-/// 
-/// Formule : clé_partagée = clé_publique_reçue^secret_propre mod p
-/// 
-/// # Arguments
-/// * `public_key_received` - La clé publique reçue de l'autre personne
-/// * `own_secret` - Son propre secret
-/// * `p` - Le nombre premier
-/// 
-/// # Returns
-/// La clé partagée (identique pour Alice et Bob)
+// La clé partagée (identique pour Alice et Bob)
 pub fn compute_shared_key(public_key_received: &BigUint, own_secret: &BigUint, p: &BigUint) -> BigUint {
     mod_exp(public_key_received, own_secret, p)
 }
 
-/// Vérifie si un nombre est premier (test simple pour l'éducation)
-/// 
-/// # Arguments
-/// * `n` - Le nombre à tester
-/// 
-/// # Returns
-/// true si le nombre est premier, false sinon
-/// 
-/// # Note
-/// Cette fonction utilise un test simple adapté à un usage pédagogique.
-/// Pour un vrai usage cryptographique, il faudrait utiliser des tests plus robustes.
 pub fn is_prime(n: &BigUint) -> bool {
     if n < &BigUint::from(2u32) {
         return false;

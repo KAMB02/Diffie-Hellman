@@ -6,21 +6,21 @@
 use num_bigint::BigUint;
 use crate::classify::{SecurityLevel, get_security_description, get_security_explanation, get_attack_time_estimate};
 
-/// Affiche un titre stylisé
+// Affiche un titre stylisé
 pub fn display_title(title: &str) {
     println!("\n{}", "=".repeat(70));
     println!("🔐 {}", title);
     println!("{}", "=".repeat(70));
 }
 
-/// Affiche une section avec sous-titre
+// Affiche une section avec sous-titre
 pub fn display_section(title: &str) {
     println!("\n{}", "-".repeat(50));
     println!("📚 {}", title);
     println!("{}", "-".repeat(50));
 }
 
-/// Affiche une explication sur ce que sont p et g
+// Affiche une explication sur ce que sont p et g
 pub fn explain_parameters() {
     display_section("Comprendre les paramètres p et g");
     
@@ -54,7 +54,7 @@ pub fn explain_parameters() {
     println!("   • Grand p (≥ 10000) = SÉCURITÉ ! Attaque impossible");
 }
 
-/// Affiche la classification du nombre premier
+// Affiche la classification du nombre premier
 pub fn display_classification(p: &BigUint, level: &SecurityLevel) {
     display_section("Classification du nombre premier");
     
@@ -85,7 +85,7 @@ pub fn display_classification(p: &BigUint, level: &SecurityLevel) {
     }
 }
 
-/// Affiche les étapes du protocole Diffie-Hellman
+// Affiche les étapes du protocole Diffie-Hellman
 pub fn display_protocol_steps(
     p: &BigUint,
     g: &BigUint,
@@ -145,7 +145,7 @@ pub fn display_protocol_steps(
     println!("   ❌ Mais il NE voit PAS : a, b, ni la clé partagée K = {}", shared_key);
 }
 
-/// Affiche le menu d'attaque
+// Affiche le menu d'attaque
 pub fn display_attack_menu() {
     display_section("Menu d'attaque d'Ismaël");
     
@@ -161,7 +161,7 @@ pub fn display_attack_menu() {
     println!();
 }
 
-/// Affiche les options pour l'attaque brute-force
+// Affiche les options pour l'attaque brute-force
 pub fn display_brute_force_options() {
     println!("🔧 OPTIONS DE L'ATTAQUE BRUTE-FORCE :");
     println!("   • Ismaël va tester tous les nombres possibles un par un");
@@ -174,7 +174,7 @@ pub fn display_brute_force_options() {
     println!();
 }
 
-/// Affiche un message de conclusion
+// Affiche un message de conclusion
 pub fn display_conclusion(shared_key: &BigUint, level: &SecurityLevel) {
     display_section("Conclusion de la démonstration");
     
@@ -219,25 +219,20 @@ pub fn display_conclusion(shared_key: &BigUint, level: &SecurityLevel) {
     println!("   Toujours choisir des nombres premiers très grands en pratique.");
     println!("   Les vrais protocoles utilisent des nombres avec des centaines de chiffres !");
     println!();
-    
-    println!("🎬 IDÉAL POUR UNE VIDÉO PÉDAGOGIQUE :");
-    println!("   • Montrez l'attaque avec p = 23 (spectaculaire !)");
-    println!("   • Montrez la difficulté avec p = 1009");
-    println!("   • Expliquez pourquoi p = 10007 est déjà bien plus sûr");
 }
 
-/// Affiche un message d'erreur
+// Affiche un message d'erreur
 pub fn display_error(message: &str) {
     println!("\n❌ ERREUR : {}", message);
     println!("Veuillez réessayer.");
 }
 
-/// Affiche un message de succès
+// Affiche un message de succès
 pub fn display_success(message: &str) {
     println!("\n✅ SUCCÈS : {}", message);
 }
 
-/// Affiche une information
+// Affiche une information
 pub fn display_info(message: &str) {
     println!("\n💡 INFORMATION : {}", message);
 }

@@ -7,37 +7,24 @@ use num_bigint::BigUint;
 use std::time::{Duration, Instant};
 use crate::dh::{compute_public_key, compute_shared_key};
 
-/// Résultat d'une attaque brute-force
+// Résultat d'une attaque brute-force
 #[derive(Debug)]
 pub struct AttackResult {
-    /// La clé secrète trouvée (None si non trouvée)
+    // La clé secrète trouvée (None si non trouvée)
     pub secret: Option<BigUint>,
-    /// La clé partagée calculée (None si non trouvée)
+    // La clé partagée calculée (None si non trouvée)
     pub shared_key: Option<BigUint>,
-    /// Le nombre d'essais effectués
+    // Le nombre d'essais effectués
     pub attempts: u64,
-    /// Le temps écoulé pendant l'attaque
+    // Le temps écoulé pendant l'attaque
     pub duration: Duration,
-    /// Message de résultat
+    // Message de résultat
     pub message: String,
 }
 
-/// Effectue une attaque brute-force pour retrouver le secret d'Alice
-/// 
-/// Ismaël connaît p, g, A (clé publique d'Alice) et B (clé publique de Bob).
-/// Il essaie toutes les valeurs possibles pour le secret d'Alice jusqu'à trouver
-/// celle qui produit la bonne clé publique.
-/// 
-/// # Arguments
-/// * `p` - Le nombre premier public
-/// * `g` - Le générateur public
-/// * `A` - La clé publique d'Alice
-/// * `B` - La clé publique de Bob
-/// * `max_attempts` - Le nombre maximum d'essais (pour éviter les boucles infinies)
-/// * `show_progress` - Afficher la progression pendant l'attaque
-/// 
-/// # Returns
-/// Un AttackResult contenant le résultat de l'attaque
+// Effectue une attaque brute-force pour retrouver le secret d'Alice
+
+// Un AttackResult contenant le résultat de l'attaque
 pub fn brute_force_attack(
     p: &BigUint,
     g: &BigUint,
@@ -102,20 +89,9 @@ pub fn brute_force_attack(
     }
 }
 
-/// Effectue une attaque plus intelligente en utilisant les logarithmes discrets (simulation)
-/// 
-/// Cette fonction simule une attaque plus avancée. En réalité, les algorithmes de 
-/// logarithme discret sont beaucoup plus complexes, mais nous les simulons ici
-/// à des fins pédagogiques.
-/// 
-/// # Arguments
-/// * `p` - Le nombre premier public
-/// * `g` - Le générateur public
-/// * `A` - La clé publique d'Alice
-/// * `B` - La clé publique de Bob
-/// 
-/// # Returns
-/// Un AttackResult contenant le résultat de l'attaque
+// Effectue une attaque plus intelligente en utilisant les logarithmes discrets
+
+// Un AttackResult contenant le résultat de l'attaque
 pub fn smart_attack(
     p: &BigUint,
     _g: &BigUint,
@@ -127,7 +103,6 @@ pub fn smart_attack(
     println!("\n🧠 Ismaël essaie une attaque plus intelligente...");
     println!("   Il utilise des algorithmes avancés de logarithme discret...");
     
-    // Simulation : on suppose que l'attaque intelligente est plus rapide
     // pour les nombres de taille moyenne, mais toujours impossible pour les grands
     let p_size = p.to_string().len();
     
@@ -171,10 +146,10 @@ pub fn smart_attack(
     }
 }
 
-/// Affiche les détails d'un résultat d'attaque
-/// 
-/// # Arguments
-/// * `result` - Le résultat de l'attaque à afficher
+// Affiche les détails d'un résultat d'attaque
+// 
+// # Arguments
+// * `result` - Le résultat de l'attaque à afficher
 pub fn display_attack_result(result: &AttackResult) {
     println!("\n{}", "=".repeat(60));
     println!("📊 RÉSULTAT DE L'ATTAQUE");

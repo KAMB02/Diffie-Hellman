@@ -5,29 +5,29 @@
 
 use num_bigint::BigUint;
 
-/// Catégorie de sécurité pour un nombre premier
+// Catégorie de sécurité pour un nombre premier
 #[derive(Debug, Clone, PartialEq)]
 pub enum SecurityLevel {
-    /// Petit nombre premier (< 100) - Très dangereux, attaque facile
+    // Petit nombre premier (< 100) - Très dangereux, attaque facile
     Small,
-    /// Nombre premier moyen (100 ≤ p < 10 000) - Attaquable avec effort
+    // Nombre premier moyen (100 ≤ p < 10 000) - Attaquable avec effort
     Medium, 
-    /// Grand nombre premier (≥ 10 000) - Sécurisé pour cette démo
+    // Grand nombre premier (≥ 10 000) - Sécurisé pour cette démo
     Large,
 }
 
-/// Classifie un nombre premier selon sa taille
-/// 
-/// # Arguments
-/// * `p` - Le nombre premier à classifier
-/// 
-/// # Returns
-/// La catégorie de sécurité correspondante
-/// 
-/// # Classification
-/// - Small : p < 100 (dangereux, attaque en quelques secondes)
-/// - Medium : 100 ≤ p < 10 000 (attaquable avec effort)
-/// - Large : p ≥ 10 000 (sécurisé pour cette démo)
+// Classifie un nombre premier selon sa taille
+// 
+// # Arguments
+// * `p` - Le nombre premier à classifier
+// 
+// # Returns
+// La catégorie de sécurité correspondante
+// 
+// # Classification
+// - Small : p < 100 (dangereux, attaque en quelques secondes)
+// - Medium : 100 ≤ p < 10 000 (attaquable avec effort)
+// - Large : p ≥ 10 000 (sécurisé pour cette démo)
 pub fn classify_prime_size(p: &BigUint) -> SecurityLevel {
     let small_threshold = BigUint::from(100u32);
     let medium_threshold = BigUint::from(10000u32);
@@ -41,13 +41,13 @@ pub fn classify_prime_size(p: &BigUint) -> SecurityLevel {
     }
 }
 
-/// Retourne une description textuelle du niveau de sécurité
-/// 
-/// # Arguments
-/// * `level` - Le niveau de sécurité
-/// 
-/// # Returns
-/// Une chaîne de caractères décrivant le niveau
+// Retourne une description textuelle du niveau de sécurité
+// 
+// # Arguments
+// * `level` - Le niveau de sécurité
+// 
+// # Returns
+// Une chaîne de caractères décrivant le niveau
 pub fn get_security_description(level: &SecurityLevel) -> &'static str {
     match level {
         SecurityLevel::Small => "petit (très dangereux !)",
@@ -56,13 +56,13 @@ pub fn get_security_description(level: &SecurityLevel) -> &'static str {
     }
 }
 
-/// Retourne une explication pédagogique sur la sécurité
-/// 
-/// # Arguments
-/// * `level` - Le niveau de sécurité
-/// 
-/// # Returns
-/// Une explication détaillée pour les lycéens
+// Retourne une explication pédagogique sur la sécurité
+// 
+// # Arguments
+// * `level` - Le niveau de sécurité
+// 
+// # Returns
+// Une explication détaillée pour les lycéens
 pub fn get_security_explanation(level: &SecurityLevel) -> &'static str {
     match level {
         SecurityLevel::Small => {
@@ -81,13 +81,13 @@ pub fn get_security_explanation(level: &SecurityLevel) -> &'static str {
     }
 }
 
-/// Retourne une estimation du temps d'attaque pour information
-/// 
-/// # Arguments
-/// * `level` - Le niveau de sécurité
-/// 
-/// # Returns
-/// Une estimation du temps nécessaire pour une attaque brute-force
+// Retourne une estimation du temps d'attaque pour information
+// 
+// # Arguments
+// * `level` - Le niveau de sécurité
+// 
+// # Returns
+// Une estimation du temps nécessaire pour une attaque brute-force
 pub fn get_attack_time_estimate(level: &SecurityLevel) -> &'static str {
     match level {
         SecurityLevel::Small => "quelques secondes",
