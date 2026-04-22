@@ -1,5 +1,9 @@
 # Diffie-Hellman Cryptographic Protocol Demonstration
 
+![Rust](https://img.shields.io/badge/Rust-1.51+-green.svg?style=flat-square&logo=rust)
+![License](https://img.shields.io/badge/License-Educational-green.svg)
+![Status](https://img.shields.io/badge/Status-Complete-brightgreen.svg)
+
 ## Description
 
 Ce projet est une démonstration interactive et pédagogique du protocole cryptographique Diffie-Hellman. Il permet de comprendre comment ce protocole permet à deux personnes (Alice et Bob) d'établir une clé secrète partagée sur un canal de communication non sécurisé, tout en montrant comment un attaquant (Ismaël) peut tenter de compromettre cette communication.
