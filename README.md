@@ -24,16 +24,24 @@ Ce projet est une démonstration interactive et pédagogique du protocole crypto
 - Simulations d'attaques (force brute et intelligente)
 - Classification du niveau de sécurité selon la taille du nombre premier
 
-### Interface Graphique (GUI)
+### Interface Graphique (interface)
 - Interface moderne utilisant egui
 - Visualisation interactive du protocole
 - Représentation graphique des clés et des attaques
+
+### Générateur de Nombres Premiers (Python)
+- Génération de nombres premiers de 8 à 2048 bits
+- Avertissements de performance pour les grands nombres
+- Interface simple et conviviale
+- Validation des entrées utilisateur
 
 ## Installation et Utilisation
 
 ### Prérequis
 - Rust (version 2021 ou supérieure)
 - Cargo (gestionnaire de paquets Rust)
+- Python 3.7+ (pour le générateur de nombres premiers)
+- Sympy (bibliothèque Python pour les mathématiques)
 
 ### Compilation
 ```bash
@@ -50,7 +58,16 @@ cargo run --bin console
 
 #### Version Graphique
 ```bash
-cargo run --bin gui
+cargo run --bin interface
+```
+
+#### Générateur de Nombres Premiers
+```bash
+# Installer sympy si nécessaire
+pip install sympy
+
+# Lancer le générateur
+python src/main.py
 ```
 
 ## Structure du Projet
@@ -58,13 +75,13 @@ cargo run --bin gui
 ```
 src/
 |-- main.rs          # Point d'entrée de l'application console
-|-- main_gui.rs      # Point d'entrée de l'application graphique
+|-- main_int.rs      # Point d'entrée de l'application graphique
 |-- dh.rs            # Implémentation du protocole Diffie-Hellman
 |-- attack.rs        # Simulations d'attaques cryptographiques
-|-- classify.rs      # Classification des niveaux de sécurité
-|-- display.rs       # Fonctions d'affichage pour la console
-|-- gui.rs           # Interface graphique (ancienne version)
-|-- gui_egui.rs      # Interface graphique moderne avec egui
+|-- classifi.rs      # Classification des niveaux de sécurité
+|-- affichage.rs       # Fonctions d'affichage pour la console
+|-- interface.rs      # Interface graphique moderne avec egui
+|-- main.py          # Générateur de nombres premiers (Python)
 ```
 
 ## Fonctionnement du Protocole
@@ -112,7 +129,9 @@ Les contributions sont bienvenues ! N'hésitez pas à :
 ## Technologies Utilisées
 
 - **Rust** : Langage de programmation principal
+- **Python** : Générateur de nombres premiers
 - **num-bigint** : Gestion des grands nombres
 - **colored** : Affichage coloré en console
 - **eframe/egui** : Interface graphique moderne
 - **tokio** : Programmation asynchrone
+- **sympy** : Bibliothèque mathématique Python
