@@ -97,10 +97,6 @@ Ce projet a été réalisé par :
 - **KAMB02** - [GitHub](https://github.com/KAMB02)
 - **ELISA_734** - [GitHub](https://github.com/Elisa734)
 
-## Licence
-
-Ce projet est distribué sous licence MIT.
-
 ## Contribuer
 
 Les contributions sont bienvenues ! N'hésitez pas à :
